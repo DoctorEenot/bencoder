@@ -418,6 +418,16 @@ impl<'a> ser::SerializeStructVariant for &'a mut Serializer {
     }
 }
 
+pub fn to_bytes<T>(value: &T) -> Result<Vec<u8>, Error>
+where
+    T: Serialize,
+{
+    let mut serializer = Serializer { output: Vec::new() };
+    value.serialize(&mut serializer)?;
+
+    Ok(serializer.output)
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
